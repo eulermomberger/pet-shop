@@ -1,5 +1,7 @@
 'use client';
 
+import { createAppointment } from '@/app/actions';
+
 import {
   Dialog,
   DialogContent,
@@ -93,11 +95,16 @@ export const AppointmentForm = () => {
     },
   });
 
-  const onSubmit = (data: AppointFormValues) => {
+  const onSubmit = async (data: AppointFormValues) => {
     const [hour, minute] = data.time.split(':');
 
     const scheduleAt = new Date(data.scheduleAt);
     scheduleAt.setHours(Number(hour), Number(minute), 0, 0);
+
+    await createAppointment({
+      ...data,
+      scheduleAt,
+    });
 
     toast.success(`Agendamento criado com sucesso!`);
 
